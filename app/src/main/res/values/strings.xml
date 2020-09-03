@@ -4,4 +4,5 @@
     <string name="full_screen_image">full_screen_image</string>
     <string name="take_photo">take photo</string>
     <string name="full_size_image">full_size_image</string>
+    <string name="description_zoom_touch_close">zoom</string>
 </resources>

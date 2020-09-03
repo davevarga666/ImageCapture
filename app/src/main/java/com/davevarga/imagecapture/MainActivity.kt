@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment.DIRECTORY_PICTURES
 import android.provider.MediaStore
+import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     private val REQUEST_MULTIPLE_PERMISSIONS = 100
     private var imageView: ImageView? = null
+    private var expandedImageView: ImageView? = null
     private lateinit var currentPhotoPath: String
     private lateinit var photoFile: File
 
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
 
         imageView = capturedImage
+        expandedImageView = expanded_image
         val permissions = listOf<String>(
             Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -60,6 +63,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        imageView?.setOnClickListener {
+            if (it != null)
+                expandedImageView?.visibility = (View.VISIBLE)
+        }
+
+        expandedImageView?.setOnClickListener {
+            if (it != null)
+                expandedImageView?.visibility = (View.INVISIBLE)
+        }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -74,7 +87,6 @@ class MainActivity : AppCompatActivity() {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "permissions granted", Toast.LENGTH_SHORT).show()
                     dispatchTakePictureIntent()
-//                }
                 } else {
                     Toast.makeText(this, "permissions denied", Toast.LENGTH_SHORT).show()
                 }
@@ -88,6 +100,7 @@ class MainActivity : AppCompatActivity() {
 
             val myBitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
             imageView?.setImageBitmap(myBitmap)
+            expandedImageView?.setImageBitmap(myBitmap)
 
         }
     }
@@ -126,14 +139,6 @@ class MainActivity : AppCompatActivity() {
                     startActivityForResult(takePictureIntent, REQUEST_MULTIPLE_PERMISSIONS)
                 }
             }
-        }
-    }
-
-    private fun galleryAddPic() {
-        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
-            val f = File(currentPhotoPath)
-            mediaScanIntent.data = Uri.fromFile(f)
-            sendBroadcast(mediaScanIntent)
         }
     }
 

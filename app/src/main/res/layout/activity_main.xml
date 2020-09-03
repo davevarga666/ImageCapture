@@ -34,5 +34,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/expanded_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:elevation="10dp"
+        android:contentDescription="@string/description_zoom_touch_close" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
